@@ -32,3 +32,5 @@ function localWeatherCoords(searchInput){
     // longitude = currentCity.lon;
     console.log(currentCity);
 }
+
+//lololol
