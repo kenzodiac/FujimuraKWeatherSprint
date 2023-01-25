@@ -1,0 +1,98 @@
+body{
+    font-family: Inter;
+    background-image: url(../assets/images/bgImages/snow.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-color: grey;
+    /* max-width: 1440px; */
+}
+
+.pg-title{
+    font-size: 48px;
+    color: #81F499;
+    margin-top: 28px;
+    margin-left: 10px;
+}
+
+.favorites-link{
+    font-size: 24px;
+    color: #0A1128;
+}
+
+.favorites-plus-symbol{
+    font-size: 36px;
+}
+
+.currently-title{
+    font-size: 36px;
+    color: white;
+    line-height: 44px;
+}
+
+.current-temp{
+    font-size: 128px;
+    color: white;
+    line-height: 155px;
+}
+
+.current-temp-f{
+    font-size: 24px;
+    color: white;
+    padding-top: 20px;
+}
+
+.add-fav-btn{
+    height: 44px;
+    width: 355px;
+    background-color: #0A1128;
+    border-radius: 15px;
+    font-size: 24px;
+    color: white;
+    line-height: 29px;
+}
+
+.current-location{
+    font-size: 48px;
+    font-weight: 400;
+    line-height: 58px;
+    color: white;
+}
+
+.current-time-weather{
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 29px;
+    color: white;
+}
+
+.weather-icons{
+    height: 50px;
+    width: 50px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+.forecast-header{
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 44px;
+    color: #0A1128;
+}
+
+.five-day-weekday-title{
+    font-size: 16px;
+    line-height: 19px;
+    color: #0A1128;
+}
+
+.five-day-high-low{
+    font-size: 12px;
+    line-height: 15px;
+    color: #0A1128;
+}
+
+.five-day-item-spacing{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
