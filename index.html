@@ -20,52 +20,13 @@
 </head>
 
 <body>
-    <!-- *~*~*~*~*~*~*~*~*~*~*~* NAVBAR BEGINS *~*~*~*~*~*~*~*~*~*~*~* -->
-    <nav class="navbar navbar-expand-lg bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Navbar</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Dropdown
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled">Disabled</a>
-                    </li>
-                </ul>
-                <form class="d-flex"></form>
-                    <input id="searchInput" class="form-control me-2" type="text" placeholder="Search city" aria-label="Search">
-                    <button id="submitBtn" class="btn btn-outline-success" type="submit">Search</button>
-                </form>
-            </div>
-        </div>
-    </nav>
-    <!-- *~*~*~*~*~*~*~*~*~*~*~* NAVBAR BEGINS *~*~*~*~*~*~*~*~*~*~*~* -->
-    
+    <!-- *~*~*~*~*~*~*~*~*~*~*~* MAIN BODY BEGINS *~*~*~*~*~*~*~*~*~*~*~* -->
     <div class="container-fluid">
         <div class="row">
             <div class="col-7">
-
+                <!-- *~*~*~*~*~*~*~*~*~*~*~* LEFT SIDE/CURRENT TEMP BEGINS *~*~*~*~*~*~*~*~*~*~*~* -->
                 <div class="container-fluid">
+                    
                     <div class="row">
                         <div class="col">
                             <div class="pg-title">the.weather</div>
@@ -74,16 +35,16 @@
                             <span class="favorites-plus-symbol">+</span><span class="favorites-link">Favorites</span>
                         </div>
                     </div>
-                    <div class="row" style="height: 663px;">
-
-                    </div>
+                    
+                    <div class="row" style="height: 663px;"></div>
+                    
                     <div class="row">
                         <div class="col-5 d-flex flex-column align-items-center">
                             <div class="currently-title">Currently</div>
                             <div class="d-flex"><div id="currentTemp" class="current-temp">20</div><div class="current-temp-f">F</div></div>
                         </div>
                         <div class="col-7">
-                            <button id="addFavBtn" class="btn add-fav-btn">Add City to Favorites</button>
+                            <button id="addFavBtn" class="btn add-fav-btn" style="margin-bottom: 20px;">Add City to Favorites</button>
                             <br>
                             <div class="current-location"><span id="currentLoc">Lake Tahoe</span>, <span id="currentState">NV</span></div>
                             <div class="d-flex justify-content-between" style="width: 355px;">
@@ -95,25 +56,27 @@
                                     <span id="currentDate">January 17, 2023</span>
                                 </div>
                             </div>
-                            
-                            
                         </div>
                     </div>
-                </div>
 
+                </div>
+                <!-- *~*~*~*~*~*~*~*~*~*~*~* LEFT SIDE/CURRENT TEMP ENDS *~*~*~*~*~*~*~*~*~*~*~* -->
             </div>
             <div class="col-5" style="background-color: rgba(255, 255, 255, .51)">
-
+                <!-- *~*~*~*~*~*~*~*~*~*~*~* RIGHT PANEL/5-DAY FORECAST BEGINS *~*~*~*~*~*~*~*~*~*~*~* -->
                 <div class="container-fluid">
-                    <div class="row">
-                        <form class="d-flex"></form>
-                        <input id="searchInput" class="form-control me-2" type="text" placeholder="Search city" aria-label="Search">
-                        <button id="submitBtn" class="btn btn-outline-success" type="submit">Search</button>
-                    </form>
+                    <div class="row" style="margin-top: 40px; margin-right: 17px;">
+                        <div class="d-flex justify-content-end">
+                            <input id="searchInput" class="search-field" type="text" placeholder="search city">
+                            <button id="submitBtn" class="btn" type="button">&#128269;</button>
+                        </div>
                     </div>
+
                     <div class="row" style="margin-top: 57px; margin-left: 17px;">
                         <span class="forecast-header">5 Day Forecast</span>
                     </div>
+
+                    <!-- *~*~*~*~*~*~*~*~*~*~*~* 5-DAY FORECAST BEGINS BEGINS *~*~*~*~*~*~*~*~*~*~*~* -->
                     <div class="row" style="margin-top: 25px;">
                         <div class="col five-day-item-spacing" style="margin-left: 17px;">
                             <div id="fiveDayTitle1" class="five-day-weekday-title">
@@ -161,16 +124,43 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row" style="margin-top: 25px; margin-left: 17px;">
+                    <!-- *~*~*~*~*~*~*~*~*~*~*~* 5-DAY FORECAST ENDS *~*~*~*~*~*~*~*~*~*~*~* -->
+
+                    <div class="row" style="margin-top: 25px; margin-left: 17px; margin-bottom: 32px;">
                         <span class="forecast-header">Today's Forecast</span>
                     </div>
+
                     <div class="row">
-                        <div class="col">Morning Snow 10F</div>
-                        <div class="col">Noon Cloudy 29F</div>
-                        <div class="col">Evening Snow 8F</div>
+                        
+                        <div class="col px-0" style="background-color: rgba(177, 77, 181, .6); border-radius: 15px; margin-left: 41px; margin-right: 9px;">
+                            <div class="d-flex justify-content-center current-forecast">
+                                Low
+                            </div>
+                            <div class="today-forecast-icon-spacing">
+                                <img id="todayForecastLowIcon" src="./assets/images/weatherIcons/snowCloudIcon.png" class="weather-icons">
+                                <div id="todayForecastLowDescription" class="todayForecastDescription">Snow</div>
+                            </div>
+                            <div class="d-flex justify-content-center" style="margin-bottom: 8px;">
+                                <span id="todayForecastLowTemp" class="today-forecast-temp align-text-top">10</span><span class="today-forecast-temp-f">F</span>
+                            </div>
+                        </div>
+                        
+                        <div class="col px-0" style="background-color: rgba(86, 167, 157, .6); border-radius: 15px; margin-right: 41px; margin-left: 9px;">
+                            <div class="current-forecast d-flex justify-content-center">
+                                High
+                            </div>
+                            <div class="today-forecast-icon-spacing">
+                                <img id="todayForecastHighIcon" src="./assets/images/weatherIcons/cloudIcon.png" class="weather-icons">
+                                <span id="todayForecastHighDescription" class="todayForecastDescription">Cloudy</span>
+                            </div>
+                            <div class="d-flex justify-content-center" style="margin-bottom: 8px;">
+                                <span id="todayForecastHighTemp" class="today-forecast-temp align-text-top">29</span><span class="today-forecast-temp-f">F</span>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
-
+                <!-- *~*~*~*~*~*~*~*~*~*~*~* RIGHT PANEL/5-DAY FORECAST ENDS BEGINS *~*~*~*~*~*~*~*~*~*~*~* -->
             </div>
         </div>
     </div>

@@ -6,7 +6,7 @@ let submitBtn = document.getElementById("submitBtn");
 
 let currentTemp = document.getElementById("currentTemp");
 let addFavBtn = document.getElementById("addFavBtn");
-let currentLoc = document.getElementById("currentCity");
+let currentLoc = document.getElementById("currentLoc");
 let currentState = document.getElementById("currentState");
 let currentTime = document.getElementById("currentTime");
 let currentDate = document.getElementById("currentDate");
@@ -36,82 +36,67 @@ let fiveDay3Low = document.getElementById("fiveDay3Low");
 let fiveDay4Low = document.getElementById("fiveDay4Low");
 let fiveDay5Low = document.getElementById("fiveDay5Low");
 
+
+let todayForecastLowIcon = document.getElementById("todayForecastLowIcon");
+let todayForecastLowDescription = document.getElementById("todayForecastLowDescription");
+let todayForecastLowTemp = document.getElementById("todayForecastLowTemp");
+
+let todayForecastHighIcon = document.getElementById("todayForecastHighIcon");
+let todayForecastHighDescription = document.getElementById("todayForecastHighDescription");
+let todayForecastHighTemp = document.getElementById("todayForecastLowTemp");
+
 //declare variables for keeping track of data fetched from Weather API
+let locationApiTempStorage;
+let locationApiURL = "";
+let currentWeatherApiURL = "";
+
 let currentCity;
 let currentCityInfo;
 let currentCity5DayInfo;
 let savedInput = "";
-let locationApiURL = "";
 let latitude = "";
 let longitude = "";
 let cityName = "";
 
+
+async function AsyncLocalWeatherCoords(searchInput){
+    locationApiURL = "https://api.openweathermap.org/geo/1.0/direct?q=" + searchInput + "&limit=1&appid=543bd604775c751180b1c9722a1db386";
+    const promise = await fetch(locationApiURL);
+    const data = await promise.json();
+    locationApiTempStorage = data;
+    console.log(locationApiTempStorage);
+    cityName = locationApiTempStorage[0].name;
+    latitude = locationApiTempStorage[0].lat;
+    longitude = locationApiTempStorage[0].lon;
+    console.log("location: " + cityName + "; latitude: " + latitude + "; longitude: " + longitude);
+    AsyncLocalWeather(latitude, longitude);
+    AsyncFiveDayWeather(latitude, longitude);
+}
+
+async function AsyncLocalWeather(lat, lon){
+    const promise = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=543bd604775c751180b1c9722a1db386&units=imperial`);
+    const data = await promise.json();
+    currentCityInfo = data;
+    console.log(currentCityInfo);
+    cityName = currentCityInfo.name;
+    currentLoc.textContent = currentCityInfo.name;
+    currentTemp.textContent = Math.round(currentCityInfo.main.temp);
+    currentState.textContent = locationApiTempStorage[0].state;
+}
+
+async function AsyncFiveDayWeather(lat, lon){
+    const promise = await fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=543bd604775c751180b1c9722a1db386&units=imperial"`);
+    const data = await promise.json();
+    currentCity5DayInfo = data;
+    console.log(currentCity5DayInfo);
+}
+
 //event listeners
 submitBtn.addEventListener("click", function(){
-    localWeatherCoords(searchInput);
-    localWeather(latitude, longitude);
-    fiveDayWeather(latitude, longitude);
-})
+    AsyncLocalWeatherCoords(searchInput.value);
+    // fiveDayWeather(latitude, longitude);
+});
 
 addFavBtn.addEventListener("click", function(){
 
-})
-
-
-function urlCall(url){
-    fetch(url).then(
-        response => response.json()
-    ).then(
-        data => {
-            currentCity = data;
-        }
-    );
-}
-
-function urlWeatherCall(url){
-    fetch(url).then(
-        response => response.json()
-    ).then(
-        data => {
-            currentCityInfo = data;
-        }
-    );
-}
-
-function urlFiveDayCall(url){
-    fetch(url).then(
-        response => response.json()
-    ).then(
-        data => {
-            currentCity5DayInfo = data;
-        }
-    );
-}
-
-function localWeatherCoords(searchInput){
-    savedInput = searchInput.value;
-    locationApiURL = "https://api.openweathermap.org/geo/1.0/direct?q=" + savedInput + "&limit=1&appid=543bd604775c751180b1c9722a1db386";
-    urlCall(locationApiURL);
-    latitude = currentCity[0].lat;
-    longitude = currentCity[0].lon;
-    cityName = currentCity[0].name;
-    console.log(currentCity);
-    console.log("location: " + currentCity[0].name + ": " + currentCity[0].country);
-    console.log("latitude: " + currentCity[0].lat);
-    console.log("longitude: " + currentCity[0].lon);
-}
-
-function localWeather(lat, lon){
-    locationApiURL = "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&appid=543bd604775c751180b1c9722a1db386&units=imperial";
-    urlWeatherCall(locationApiURL);
-    console.log(currentCityInfo);
-    console.log("Location: "+ currentCityInfo.name);
-    console.log("Current Temp: "+ currentCityInfo.main.temp + "F");
-    console.log("Weather: "+ currentCityInfo.weather[0].description);
-}
-
-function fiveDayWeather(lat, lon){
-    locationApiURL = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=543bd604775c751180b1c9722a1db386&units=imperial";
-    urlFiveDayCall(locationApiURL);
-    console.log(currentCity5DayInfo);
-}
+});
