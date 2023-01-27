@@ -102,7 +102,7 @@ async function AsyncLocalWeatherCoords(searchInput){
     const promise = await fetch(locationApiURL);
     const data = await promise.json();
     locationApiTempStorage = data;
-    console.log(locationApiTempStorage);
+    //console.log(locationApiTempStorage);
     cityName = locationApiTempStorage[0].name;
     latitude = locationApiTempStorage[0].lat;
     longitude = locationApiTempStorage[0].lon;
@@ -110,7 +110,7 @@ async function AsyncLocalWeatherCoords(searchInput){
     currentCountryVar = locationApiTempStorage[0].country;
     currentStateVar = ParseStateInfo(currentStateVar);
     currentState.textContent = currentStateVar;
-    console.log("location: " + cityName + "; latitude: " + latitude + "; longitude: " + longitude);
+    //console.log("location: " + cityName + "; latitude: " + latitude + "; longitude: " + longitude);
     AsyncLocalWeather(latitude, longitude);
     AsyncFiveDayWeather(latitude, longitude);
 
@@ -121,7 +121,7 @@ async function AsyncLocalWeather(lat, lon){
     const promise = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}${apiKey}&units=imperial`);
     const data = await promise.json();
     currentCityInfo = data;
-    console.log(currentCityInfo);
+    //console.log(currentCityInfo);
     cityName = currentCityInfo.name;
     currentLoc.textContent = currentCityInfo.name;
     currentTemp.textContent = Math.round(currentCityInfo.main.temp);
@@ -135,7 +135,7 @@ async function AsyncFiveDayWeather(lat, lon){
     const promise = await fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}${apiKey}&units=imperial`);
     const data = await promise.json();
     currentCity5DayInfo = data;
-    console.log(currentCity5DayInfo);
+    //console.log(currentCity5DayInfo);
     Parse5DayForecastInfo();
 };
 
@@ -207,9 +207,9 @@ function ParseStateInfo(state){
 
 //default location/time obtained from user browser
 function success(position){
-    console.log(position);
-    console.log("latitude: " + position.coords.latitude);
-    console.log("longitude: " + position.coords.longitude);
+    //console.log(position);
+    //console.log("latitude: " + position.coords.latitude);
+    //console.log("longitude: " + position.coords.longitude);
     latitude = position.coords.latitude;
     longitude = position.coords.longitude;
     AsyncReverseGeocoding(latitude, longitude);
@@ -309,7 +309,7 @@ function EvaluateMins(date){
 
 function EvaluateCurrentTime(){
     currentTimeData = new Date();
-    console.log(currentTimeData.getHours());
+    //console.log(currentTimeData.getHours());
     currentTimeHours = EvaluateHours(currentTimeData);
     currentTimeMins = EvaluateMins(currentTimeData);
     currentTimeMonth = EvaluateMonth(currentTimeData);
@@ -375,7 +375,7 @@ function Parse5DayForecastInfo(){
 
     //variable to hold the day of the first data point to reference beginning of 5-day forecast
     let beginningDate = dayFormatter.format(currentCity5DayInfo.list[0].dt * 1000);
-    console.log(beginningDate);
+    //console.log(beginningDate);
 
     //for loop that sorts data into different days
     for (let i = 0; i < currentCity5DayInfo.list.length; i++){
@@ -545,7 +545,7 @@ function Determine5DayIcons(arr){
                 result = "01d"; 
                 break;
         }
-        console.log(result);
+        //console.log(result);
     }
     return result;
 };
@@ -556,7 +556,7 @@ submitBtn.addEventListener("click", function(){
 });
 
 addFavBtn.addEventListener("click", function(){
-    console.log();
+    //console.log();
     let location = {lon: longitude, lat: latitude, name: cityName, state: currentStateVar};
     saveFavoriteToLocalStorage(location);
     if (injectFavorites.innerHTML != ""){
@@ -568,14 +568,14 @@ addFavBtn.addEventListener("click", function(){
 favoritesListBtn.addEventListener("click", function(){
     injectFavorites.innerHTML = "";
     let localStorageData = getLocalStorage();
-    console.log(localStorageData);
+    //console.log(localStorageData);
     CreateElements();
 });
 
 //function for creating/displaying favorite's list
 function CreateElements(){
     let favorites = getLocalStorage();
-    console.log(favorites);
+    //console.log(favorites);
     favorites.map(city => {
 
         let cityBtn = document.createElement('button');
