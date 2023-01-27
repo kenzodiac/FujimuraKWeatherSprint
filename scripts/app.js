@@ -6,12 +6,12 @@ if (prod.isLive){
 } else {
     apiKey += dev.apiKey;
 }
-//import {} from "./localStorage.js" -- 
+//importing functions from localStorage.js to enable favorites functionality
 import { saveFavoriteToLocalStorage, getLocalStorage, removeFromLocalStorage } from "./localStorage.js";
 
+//opt-in for bootstrap tooltips
 const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
 const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
-
 
 //declare variables from HTML elements
 //bg image
@@ -195,7 +195,7 @@ function ParseStateInfo(state){
         case "Utah": stateCode = "UT"; break;
         case "Vermont": stateCode = "VT"; break;
         case "Virginia": stateCode = "VA"; break;
-        case "Virgin Islands": stateCode = "VI"; break;
+        case "United States Virgin Islands": stateCode = "VI"; break;
         case "Washington": stateCode = "WA"; break;
         case "West Virginia": stateCode = "WV"; break;
         case "Wisconsin": stateCode = "WI"; break;
@@ -207,9 +207,6 @@ function ParseStateInfo(state){
 
 //default location/time obtained from user browser
 function success(position){
-    //console.log(position);
-    //console.log("latitude: " + position.coords.latitude);
-    //console.log("longitude: " + position.coords.longitude);
     latitude = position.coords.latitude;
     longitude = position.coords.longitude;
     AsyncReverseGeocoding(latitude, longitude);
@@ -309,7 +306,6 @@ function EvaluateMins(date){
 
 function EvaluateCurrentTime(){
     currentTimeData = new Date();
-    //console.log(currentTimeData.getHours());
     currentTimeHours = EvaluateHours(currentTimeData);
     currentTimeMins = EvaluateMins(currentTimeData);
     currentTimeMonth = EvaluateMonth(currentTimeData);
@@ -375,7 +371,6 @@ function Parse5DayForecastInfo(){
 
     //variable to hold the day of the first data point to reference beginning of 5-day forecast
     let beginningDate = dayFormatter.format(currentCity5DayInfo.list[0].dt * 1000);
-    //console.log(beginningDate);
 
     //for loop that sorts data into different days
     for (let i = 0; i < currentCity5DayInfo.list.length; i++){
@@ -502,50 +497,25 @@ function FindLowTemp(arr){
 function Determine5DayIcons(arr){
     let result = arr[0].weather[0].icon;
     for (let i = 0; i < arr.length; i++){
-        switch(arr[i].weather[0].icon){
-            case "13d" || "13n":
-                result = "13d";
-                break;
-            case "11d" || "11n": 
-                if (result != "13d" || result != "13n"){
-                    result = "11d";
-                }
-                break;
-            case "10d" || "10n":
-                if (result != "13d" || result != "13n" || result != "11d" || result != "11n"){
-                    result = "10d";
-                } 
-                break;
-            case "50d" || "50n": 
-                if (result != "13d" || result != "13n" || result != "11d" || result != "11n" || result != "10d" || result != "10n"){
-                    result = "50d";
-                }
-                break;
-            case "09d" || "09n":
-                if (result != "13d" || result != "13n" || result != "11d" || result != "11n" || result != "10d" || result != "10n" || result != "50d" || result != "50n"){
-                    result = "09d";
-                }
-                break;
-            case "04d" || "04n":
-                if (result != "13d" || result != "13n" || result != "11d" || result != "11n" || result != "10d" || result != "10n" || result != "50d" || result != "50n" || result != "09d" || result != "09n"){
-                    result = "04d";
-                }
-                break;
-            case "03d" || "03n": 
-                if (result != "13d" || result != "13n" || result != "11d" || result != "11n" || result != "10d" || result != "10n" || result != "50d" || result != "50n" || result != "09d" || result != "09n" || result != "04d" || result != "04n"){
-                    result = "03d";
-                }
-                break;
-            case "02d" || "02n":
-                if (result != "13d" || result != "13n" || result != "11d" || result != "11n" || result != "10d" || result != "10n" || result != "50d" || result != "50n" || result != "09d" || result != "09n" || result != "04d" || result != "04n" || result != "03d" || result != "03n"){
-                    result = "02d";
-                }
-                break;
-            default: 
-                result = "01d"; 
-                break;
+        if (arr[i].weather[0].icon == "13d" || arr[i].weather[0].icon == "13n"){
+            result = "13d";
+        } else if (arr[i].weather[0].icon == "11d" || arr[i].weather[0].icon == "11n"){
+            result = "11d";
+        } else if (arr[i].weather[0].icon == "10d" || arr[i].weather[0].icon == "10n"){
+            result = "10d";
+        } else if (arr[i].weather[0].icon == "50d" || arr[i].weather[0].icon == "50n"){
+            result = "50d";
+        } else if (arr[i].weather[0].icon == "09d" || arr[i].weather[0].icon == "09n"){
+            result = "09d";
+        } else if (arr[i].weather[0].icon == "04d" || arr[i].weather[0].icon == "04n"){
+            result = "04d";
+        } else if (arr[i].weather[0].icon == "03d" || arr[i].weather[0].icon == "03n"){
+            result = "03d";
+        } else if (arr[i].weather[0].icon == "02d" || arr[i].weather[0].icon == "02n"){
+            result = "02d";
+        } else {
+            result = "01d";
         }
-        //console.log(result);
     }
     return result;
 };
@@ -556,7 +526,6 @@ submitBtn.addEventListener("click", function(){
 });
 
 addFavBtn.addEventListener("click", function(){
-    //console.log();
     let location = {lon: longitude, lat: latitude, name: cityName, state: currentStateVar};
     saveFavoriteToLocalStorage(location);
     if (injectFavorites.innerHTML != ""){
@@ -568,16 +537,16 @@ addFavBtn.addEventListener("click", function(){
 favoritesListBtn.addEventListener("click", function(){
     injectFavorites.innerHTML = "";
     let localStorageData = getLocalStorage();
-    //console.log(localStorageData);
     CreateElements();
 });
 
 //function for creating/displaying favorite's list
 function CreateElements(){
     let favorites = getLocalStorage();
-    //console.log(favorites);
+    //.map to create all of the buttons from the array of data in localStorage
     favorites.map(city => {
 
+        //creating the buttons showing all of the locations stored in localStorage
         let cityBtn = document.createElement('button');
         cityBtn.className = 'btn add-fav-btn';
         cityBtn.textContent = city.name + ", " + city.state;
@@ -592,6 +561,7 @@ function CreateElements(){
             AsyncFiveDayWeather(latitude, longitude);
         });
 
+        //creating the delete buttons to remove items from localStorage
         let deleteBtn = document.createElement('button');
         deleteBtn.className = 'btn btn-danger';
         deleteBtn.textContent = 'X';
@@ -603,6 +573,7 @@ function CreateElements(){
             CreateElements();
         });
 
+        //creating the divs to put the buttons into
         let outsideDiv = document.createElement("div");
         outsideDiv.style = 'margin-bottom: 1rem;';
         outsideDiv.className = 'fadeIn';
@@ -612,6 +583,8 @@ function CreateElements(){
 
         injectFavorites.appendChild(outsideDiv);
     });
+
+    //creating the close favorites button
     let closeFavorites = document.createElement('button');
     closeFavorites.className = 'btn add-fav-btn';
     closeFavorites.textContent = 'Close Favorites';
@@ -623,7 +596,8 @@ function CreateElements(){
 
     let closeBtnDiv = document.createElement("div");
     closeBtnDiv.className = 'fadeIn';
-
+    
+    //injecting everything into the html
     closeBtnDiv.appendChild(closeFavorites);
     injectFavorites.appendChild(closeBtnDiv);
 };
