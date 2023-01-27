@@ -278,15 +278,15 @@ function EvaluateHours(date){
     let temp = date.getHours();
     let result = "";
     if (temp <= 23 && temp >= 13){
-        result = temp - 12;
+        result = (temp - 12);
         currentTimeAmPm = "pm";
-    } else if (temp = 12){
+    } else if (temp == 12){
         result = temp;
         currentTimeAmPm = "pm";
     } else if (temp <= 11 && temp >= 1){
         result = temp;
         currentTimeAmPm = "am";
-    } else {
+    } else if (temp == 0) {
         result = 12;
         currentTimeAmPm = "am";
     }
