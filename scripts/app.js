@@ -1,3 +1,4 @@
+//importing api keys from enviornment.js
 import {prod, dev} from "./environment.js";
 let apiKey = "&appid=";
 if (prod.isLive){
@@ -5,7 +6,8 @@ if (prod.isLive){
 } else {
     apiKey += dev.apiKey;
 }
-//import {} from "./localStorage.js"
+//import {} from "./localStorage.js" -- 
+import { saveFavoriteToLocalStorage, getLocalStorage, removeFromLocalStorage } from "./localStorage.js";
 
 //declare variables from HTML elements
 //bg image
@@ -14,6 +16,10 @@ let backgroundImage = document.getElementById("backgroundImage");
 //search bar
 let searchInput = document.getElementById("searchInput");
 let submitBtn = document.getElementById("submitBtn");
+
+//inject favorites area
+let favoritesListBtn = document.getElementById("favoritesListBtn");
+let injectFavorites = document.getElementById("injectFavorites");
 
 //current weather info
 let currentTemp = document.getElementById("currentTemp");
@@ -64,12 +70,9 @@ let todayForecastHighTemp = document.getElementById("todayForecastHighTemp");
 let locationApiTempStorage;
 let reverseGeoLocationTempStorage;
 let locationApiURL = "";
-let currentWeatherApiURL = "";
 
-let currentCity;
 let currentCityInfo;
 let currentCity5DayInfo;
-let savedInput = "";
 let latitude = "";
 let longitude = "";
 let cityName = "";
@@ -89,31 +92,6 @@ let currentTimeDayOfWeek = EvaluateDayOfWeek(currentTimeData);
 let currentTimeDay = currentTimeData.getDay();
 let currentTimeYear = currentTimeData.getFullYear();
 
-let fiveDayTitle1Var;
-let fiveDayTitle2Var;
-let fiveDayTitle3Var;
-let fiveDayTitle4Var;
-let fiveDayTitle5Var;
-
-let fiveDayImg1Var;
-let fiveDayImg2Var;
-let fiveDayImg3Var;
-let fiveDayImg4Var;
-let fiveDayImg5Var;
-
-let fiveDay1HighVar;
-let fiveDay2HighVar;
-let fiveDay3HighVar;
-let fiveDay4HighVar;
-let fiveDay5HighVar;
-
-let fiveDay1LowVar;
-let fiveDay2LowVar;
-let fiveDay3LowVar;
-let fiveDay4LowVar;
-let fiveDay5LowVar;
-
-
 //geolocation api fetch/call
 async function AsyncLocalWeatherCoords(searchInput){
     locationApiURL = "https://api.openweathermap.org/geo/1.0/direct?q=" + searchInput + "&limit=1" + apiKey;
@@ -132,7 +110,7 @@ async function AsyncLocalWeatherCoords(searchInput){
     AsyncLocalWeather(latitude, longitude);
     AsyncFiveDayWeather(latitude, longitude);
 
-}
+};
 
 //current weather api fetch/call
 async function AsyncLocalWeather(lat, lon){
@@ -146,7 +124,7 @@ async function AsyncLocalWeather(lat, lon){
     currentWeatherIcon.src = EvaluateWeatherIcon(currentCityInfo.weather[0].icon);
     backgroundImage.style.backgroundImage = `url("${EvaluateCurrentBackground(currentCityInfo.weather[0].icon)}")`;
     currentWeatherDescription.textContent = currentCityInfo.weather[0].main;
-}
+};
 
 //five day weather forecast fetch/call
 async function AsyncFiveDayWeather(lat, lon){
@@ -155,7 +133,7 @@ async function AsyncFiveDayWeather(lat, lon){
     currentCity5DayInfo = data;
     console.log(currentCity5DayInfo);
     Parse5DayForecastInfo();
-}
+};
 
 //parsing state names into state codes custom function
 function ParseStateInfo(state){
@@ -221,7 +199,7 @@ function ParseStateInfo(state){
         default: stateCode = currentCountryVar;
     }
     return stateCode;
-}
+};
 
 //default location/time obtained from user browser
 function success(position){
@@ -234,17 +212,17 @@ function success(position){
     AsyncLocalWeather(latitude, longitude);
     EvaluateCurrentTime();
     AsyncFiveDayWeather(latitude, longitude);
-}
+};
 
 function error(err){
     console.warn(err.message);
-}
+};
 
 const options = {
     enableHighAccuracy: true,
     timeout: 5000,
     maximumAge: 0
-}
+};
 
 navigator.geolocation.getCurrentPosition(success, error, options);
 
@@ -258,7 +236,7 @@ async function AsyncReverseGeocoding(lat, lon){
     currentCountryVar = reverseGeoLocationTempStorage[0].country;
     currentStateVar = ParseStateInfo(currentStateVar);
     currentState.textContent = currentStateVar;
-}
+};
 
 //totally unnecessary functions that parse date/time data
 function EvaluateDayOfWeek(date){
@@ -274,7 +252,7 @@ function EvaluateDayOfWeek(date){
         default: break;
     }
     return result;
-}
+};
 
 function EvaluateMonth(date){
     let result ="";
@@ -294,7 +272,7 @@ function EvaluateMonth(date){
         default: break;
     }
     return result;
-}
+};
 
 function EvaluateHours(date){
     let temp = date.getHours();
@@ -313,7 +291,7 @@ function EvaluateHours(date){
         currentTimeAmPm = "am";
     }
     return result;
-}
+};
 
 function EvaluateMins(date){
     let result = "";
@@ -323,7 +301,7 @@ function EvaluateMins(date){
         result = date.getMinutes();
     }
     return result;
-}
+};
 
 function EvaluateCurrentTime(){
     currentTimeData = new Date();
@@ -336,7 +314,7 @@ function EvaluateCurrentTime(){
     currentTimeYear = currentTimeData.getFullYear();
     currentTime.textContent = currentTimeHours +  ":" + currentTimeMins + currentTimeAmPm;
     currentDate.textContent = currentTimeMonth + " " + currentTimeDay + ", " + currentTimeYear;
-}
+};
 
 //function that determines the weather icons used across the website based on API inputs
 function EvaluateWeatherIcon(input){
@@ -355,7 +333,7 @@ function EvaluateWeatherIcon(input){
         default: result = "../assets/images/weatherIcons/sunIcon.png"; break;
     }
     return result;
-}
+};
 
 //function that determines the background based on the returned API data
 function EvaluateCurrentBackground(input){
@@ -373,7 +351,7 @@ function EvaluateCurrentBackground(input){
         default: result = "../assets/images/bgImages/sunnyDay.jpg"; break;
     }
     return result;
-}
+};
 
 //function that does the bulk of processing the 5-Day Weather Forecast data from the 5-Day Forecast API
 function Parse5DayForecastInfo(){
@@ -393,7 +371,6 @@ function Parse5DayForecastInfo(){
 
     //variable to hold the day of the first data point to reference beginning of 5-day forecast
     let beginningDate = dayFormatter.format(currentCity5DayInfo.list[0].dt * 1000);
-    fiveDayTitle1Var = beginningDate;
     console.log(beginningDate);
 
     //for loop that sorts data into different days
@@ -442,54 +419,31 @@ function Parse5DayForecastInfo(){
         default:
             break;
     }
-}
+};
 
 //function that processes the information from the 5-day weather forecast and populates the webpage with weather data
 function Process5DayInfoForOutput(arr1, arr2, arr3, arr4, arr5){
     const dayFormatter = new Intl.DateTimeFormat(undefined, {
         weekday: 'long',
     })
-    fiveDayTitle1Var = dayFormatter.format(arr1[0].dt * 1000);
-    fiveDayTitle2Var = dayFormatter.format(arr2[0].dt * 1000);
-    fiveDayTitle3Var = dayFormatter.format(arr3[0].dt * 1000);
-    fiveDayTitle4Var = dayFormatter.format(arr4[0].dt * 1000);
-    fiveDayTitle5Var = dayFormatter.format(arr5[0].dt * 1000);
 
-    fiveDayTitle1.textContent = fiveDayTitle1Var;
-    fiveDayTitle2.textContent = fiveDayTitle2Var;
-    fiveDayTitle3.textContent = fiveDayTitle3Var;
-    fiveDayTitle4.textContent = fiveDayTitle4Var;
-    fiveDayTitle5.textContent = fiveDayTitle5Var;
+    fiveDayTitle1.textContent = dayFormatter.format(arr1[0].dt * 1000);
+    fiveDayTitle2.textContent = dayFormatter.format(arr2[0].dt * 1000);
+    fiveDayTitle3.textContent = dayFormatter.format(arr3[0].dt * 1000);
+    fiveDayTitle4.textContent = dayFormatter.format(arr4[0].dt * 1000);
+    fiveDayTitle5.textContent = dayFormatter.format(arr5[0].dt * 1000);
 
-    fiveDayImg1Var = Determine5DayIcons(arr1);
-    fiveDayImg2Var = Determine5DayIcons(arr2);
-    fiveDayImg3Var = Determine5DayIcons(arr3);
-    fiveDayImg4Var = Determine5DayIcons(arr4);
-    fiveDayImg5Var = Determine5DayIcons(arr5);
-
-    fiveDayImg1.src = EvaluateWeatherIcon(fiveDayImg1Var);
-    fiveDayImg2.src = EvaluateWeatherIcon(fiveDayImg2Var);
-    fiveDayImg3.src = EvaluateWeatherIcon(fiveDayImg3Var);
-    fiveDayImg4.src = EvaluateWeatherIcon(fiveDayImg4Var);
-    fiveDayImg5.src = EvaluateWeatherIcon(fiveDayImg5Var);
-
-    fiveDay1HighVar = FindHighTemp(arr1);
-    fiveDay2HighVar = FindHighTemp(arr2);
-    fiveDay3HighVar = FindHighTemp(arr3);
-    fiveDay4HighVar = FindHighTemp(arr4);
-    fiveDay5HighVar = FindHighTemp(arr5);
+    fiveDayImg1.src = EvaluateWeatherIcon(Determine5DayIcons(arr1));
+    fiveDayImg2.src = EvaluateWeatherIcon(Determine5DayIcons(arr2));
+    fiveDayImg3.src = EvaluateWeatherIcon(Determine5DayIcons(arr3));
+    fiveDayImg4.src = EvaluateWeatherIcon(Determine5DayIcons(arr4));
+    fiveDayImg5.src = EvaluateWeatherIcon(Determine5DayIcons(arr5));
 
     fiveDay1High.textContent = FindHighTemp(arr1);
     fiveDay2High.textContent = FindHighTemp(arr2);
     fiveDay3High.textContent = FindHighTemp(arr3);
     fiveDay4High.textContent = FindHighTemp(arr4);
     fiveDay5High.textContent = FindHighTemp(arr5);
-
-    fiveDay1LowVar = FindLowTemp(arr1);
-    fiveDay2LowVar = FindLowTemp(arr2);
-    fiveDay3LowVar = FindLowTemp(arr3);
-    fiveDay4LowVar = FindLowTemp(arr4);
-    fiveDay5LowVar = FindLowTemp(arr5);
 
     fiveDay1Low.textContent = FindLowTemp(arr1);
     fiveDay2Low.textContent = FindLowTemp(arr2);
@@ -498,7 +452,7 @@ function Process5DayInfoForOutput(arr1, arr2, arr3, arr4, arr5){
     fiveDay5Low.textContent = FindLowTemp(arr5);
 
     ProcessDataForTodayForcast(arr1);
-}
+};
 
 function ProcessDataForTodayForcast(arr){
     FindHighTemp(arr);
@@ -512,7 +466,7 @@ function ProcessDataForTodayForcast(arr){
 
     todayForecastLowTemp.textContent = FindLowTemp(arr);
     todayForecastHighTemp.textContent = FindHighTemp(arr);
-}
+};
 
 //function to find which dataset represents the highest temp
 function FindHighTemp(arr){
@@ -525,7 +479,7 @@ function FindHighTemp(arr){
         }
     }
     return Math.round(result);
-}
+};
 
 //function to find which dataset represents the lowest temp
 function FindLowTemp(arr){
@@ -538,7 +492,7 @@ function FindLowTemp(arr){
         }
     }
     return Math.round(result);
-}
+};
 
 //function to determine which weather icon should represent a day in the 5-day forcast
 function Determine5DayIcons(arr){
@@ -589,7 +543,7 @@ function Determine5DayIcons(arr){
         }
     }
     return result;
-}
+};
 
 //event listeners
 submitBtn.addEventListener("click", function(){
@@ -597,5 +551,46 @@ submitBtn.addEventListener("click", function(){
 });
 
 addFavBtn.addEventListener("click", function(){
-
+    console.log();
+    let location = {lon: longitude, lat: latitude, name: cityName, state: currentStateVar}
+    saveFavoriteToLocalStorage(location);
 });
+
+favoritesListBtn.addEventListener("click", function(){
+    injectFavorites.innerHTML = "";
+    let localStorageData = getLocalStorage();
+    console.log(localStorageData);
+    CreateElements();
+});
+
+function CreateElements(){
+    let favorites = getLocalStorage();
+    console.log(favorites);
+    favorites.map(city => {
+
+        let cityBtn = document.createElement('button');
+        cityBtn.className = 'btn add-fav-btn';
+        cityBtn.textContent = city.name + ", " + city.state;
+        cityBtn.type = 'button'
+        cityBtn.addEventListener('click', function(){
+            latitude = city.lat;
+            longitude = city.lon;
+            AsyncReverseGeocoding(latitude, longitude);
+            AsyncLocalWeather(latitude, longitude);
+            EvaluateCurrentTime();
+            AsyncFiveDayWeather(latitude, longitude);
+        });
+
+        let deleteBtn = document.createElement('button');
+        deleteBtn.className = 'btn btn-danger';
+        deleteBtn.textContent = 'X';
+        deleteBtn.type = 'button';
+        deleteBtn.style = 'height: 44px; width: 44px; border-radius: 15px;';
+        deleteBtn.addEventListener('click', function(){
+            removeFromLocalStorage(city);
+        });
+
+        injectFavorites.appendChild(cityBtn);
+        injectFavorites.appendChild(deleteBtn);
+    })
+};
