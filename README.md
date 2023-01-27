@@ -10,3 +10,4 @@
     - Geocoding API: https://openweathermap.org/api/geocoding-api
 - Azure hosted site: https://kensfweatherapp.azurewebsites.net/
 - Github repistory: https://github.com/kenzodiac/FujimuraKWeatherSprint
+- Figma prototype: https://www.figma.com/file/Donvc4GBkjCAS1ecVL5Tzs/
