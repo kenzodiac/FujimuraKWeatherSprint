@@ -3,8 +3,7 @@ body{
     background-image: url(../assets/images/bgImages/snow.jpg);
     background-size: cover;
     background-repeat: no-repeat;
-    background-color: grey;
-    /* max-width: 1440px; */
+    background-color: rgb(20, 20, 20);
 }
 
 .pg-title{

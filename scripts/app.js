@@ -8,6 +8,9 @@ if (prod.isLive){
 //import {} from "./localStorage.js"
 
 //declare variables from HTML elements
+//bg image
+let backgroundImage = document.getElementById("backgroundImage");
+
 //search bar
 let searchInput = document.getElementById("searchInput");
 let submitBtn = document.getElementById("submitBtn");
@@ -82,6 +85,31 @@ let currentTimeDayOfWeek = EvaluateDayOfWeek(currentTimeData);
 let currentTimeDay = currentTimeData.getDay();
 let currentTimeYear = currentTimeData.getFullYear();
 
+let fiveDayTitle1Var;
+let fiveDayTitle2Var;
+let fiveDayTitle3Var;
+let fiveDayTitle4Var;
+let fiveDayTitle5Var;
+
+let fiveDayImg1Var;
+let fiveDayImg2Var;
+let fiveDayImg3Var;
+let fiveDayImg4Var;
+let fiveDayImg5Var;
+
+let fiveDay1HighVar;
+let fiveDay2HighVar;
+let fiveDay3HighVar;
+let fiveDay4HighVar;
+let fiveDay5HighVar;
+
+let fiveDay1LowVar;
+let fiveDay2LowVar;
+let fiveDay3LowVar;
+let fiveDay4LowVar;
+let fiveDay5LowVar;
+
+
 //geolocation api fetch/call
 async function AsyncLocalWeatherCoords(searchInput){
     locationApiURL = "https://api.openweathermap.org/geo/1.0/direct?q=" + searchInput + "&limit=1" + apiKey;
@@ -112,15 +140,17 @@ async function AsyncLocalWeather(lat, lon){
     currentLoc.textContent = currentCityInfo.name;
     currentTemp.textContent = Math.round(currentCityInfo.main.temp);
     currentWeatherIcon.src = EvaluateWeatherIcon(currentCityInfo.weather[0].icon);
+    backgroundImage.style.backgroundImage = `url("${EvaluateCurrentBackground(currentCityInfo.weather[0].icon)}")`;
     currentWeatherDescription.textContent = currentCityInfo.weather[0].main;
 }
 
 //five day weather forecast fetch/call
 async function AsyncFiveDayWeather(lat, lon){
-    const promise = await fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}${apiKey}&units=imperial"`);
+    const promise = await fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}${apiKey}&units=imperial`);
     const data = await promise.json();
     currentCity5DayInfo = data;
     console.log(currentCity5DayInfo);
+    Parse5DayForecastInfo();
 }
 
 //parsing state names into state codes custom function
@@ -129,7 +159,7 @@ function ParseStateInfo(state){
     switch(state){
         case "Alabama": stateCode = "AL"; break;
         case "Alaska": stateCode = "AK"; break;
-        case "Arizona": stateCode = "AR"; break;
+        case "Arizona": stateCode = "AZ"; break;
         case "Arkansas": stateCode = "AR"; break;
         case "American Samoa": stateCode = "AS"; break;
         case "California": stateCode = "CA"; break;
@@ -199,6 +229,7 @@ function success(position){
     AsyncReverseGeocoding(latitude, longitude);
     AsyncLocalWeather(latitude, longitude);
     EvaluateCurrentTime();
+    AsyncFiveDayWeather(latitude, longitude);
 }
 
 function error(err){
@@ -225,6 +256,7 @@ async function AsyncReverseGeocoding(lat, lon){
     currentState.textContent = currentStateVar;
 }
 
+//totally unnecessary functions that parse date/time data
 function EvaluateDayOfWeek(date){
     let result = "";
     switch(date.getDay()){
@@ -302,6 +334,7 @@ function EvaluateCurrentTime(){
     currentDate.textContent = currentTimeMonth + " " + currentTimeDay + ", " + currentTimeYear;
 }
 
+//function that determines the weather icons used across the website based on API inputs
 function EvaluateWeatherIcon(input){
     let result = "";
     switch(input){
@@ -320,6 +353,219 @@ function EvaluateWeatherIcon(input){
     return result;
 }
 
+//function that determines the background based on the returned API data
+function EvaluateCurrentBackground(input){
+    let result = "";
+    switch(input){
+        case "01d" || "01n": result = "../assets/images/bgImages/sunnyDay.jpg"; break;
+        case "02d" || "02n": result = "../assets/images/bgImages/scatteredClouds.jpg"; break;
+        case "03d" || "03n": result = "../assets/images/bgImages/sunBehindCloud.jpg"; break;
+        case "04d" || "04n": result = "../assets/images/bgImages/cloudy.jpg"; break;
+        case "09d" || "09n": result = "../assets/images/bgImages/sunAndRain.jpg"; break;
+        case "10d" || "10n": result = "../assets/images/bgImages/rainyDay.jpg"; break;
+        case "11d" || "11n": result = "../assets/images/bgImages/thunder.jpg"; break;
+        case "13d" || "13n": result = "../assets/images/bgImages/snow.jpg"; break;
+        case "50d" || "50n": result = "../assets/images/bgImages/fog.jpg"; break;
+        default: result = "../assets/images/bgImages/sunnyDay.jpg"; break;
+    }
+    return result;
+}
+
+//function that does the bulk of processing the 5-Day Weather Forecast data from the 5-Day Forecast API
+function Parse5DayForecastInfo(){
+    //declare arrays to organize and hold the data of different days
+    let sunArr = [];
+    let monArr = [];
+    let tueArr = [];
+    let wedArr = [];
+    let thuArr = [];
+    let friArr = [];
+    let satArr = [];
+
+    //function that will parse date-time info to find the day
+    const dayFormatter = new Intl.DateTimeFormat(undefined, {
+        weekday: 'long',
+    })
+
+    //variable to hold the day of the first data point to reference beginning of 5-day forecast
+    let beginningDate = dayFormatter.format(currentCity5DayInfo.list[0].dt * 1000);
+    fiveDayTitle1Var = beginningDate;
+    console.log(beginningDate);
+
+    //for loop that sorts data into different days
+    for (let i = 0; i < currentCity5DayInfo.list.length; i++){
+        let tempInfo = dayFormatter.format(currentCity5DayInfo.list[i].dt * 1000);
+        if (tempInfo == "Sunday"){
+            sunArr.push(currentCity5DayInfo.list[i]);
+        } else if (tempInfo == "Monday"){
+            monArr.push(currentCity5DayInfo.list[i]);
+        } else if (tempInfo == "Tuesday"){
+            tueArr.push(currentCity5DayInfo.list[i]);
+        } else if (tempInfo == "Wednesday"){
+            wedArr.push(currentCity5DayInfo.list[i]);
+        } else if (tempInfo == "Thursday"){
+            thuArr.push(currentCity5DayInfo.list[i]);
+        } else if (tempInfo == "Friday"){
+            friArr.push(currentCity5DayInfo.list[i]);
+        } else if (tempInfo == "Saturday"){
+            satArr.push(currentCity5DayInfo.list[i]);
+        }
+    }
+
+    //switch statement to determine the order with which each day's information is presented
+    switch (beginningDate){
+        case "Sunday":
+            Process5DayInfoForOutput(sunArr, monArr, tueArr, wedArr, thuArr);
+            break;
+        case "Monday":
+            Process5DayInfoForOutput(monArr, tueArr, wedArr, thuArr, friArr);
+            break;
+        case "Tuesday":
+            Process5DayInfoForOutput(tueArr, wedArr, thuArr, friArr, satArr);
+            break;
+        case "Wednesday":
+            Process5DayInfoForOutput(wedArr, thuArr, friArr, satArr, sunArr);
+            break;
+        case "Thursday":
+            Process5DayInfoForOutput(thuArr, friArr, satArr, sunArr, monArr);
+            break;
+        case "Friday":
+            Process5DayInfoForOutput(friArr, satArr, sunArr, monArr, tueArr);
+            break;
+        case "Saturday":
+            Process5DayInfoForOutput(satArr, sunArr, monArr, tueArr, wedArr);
+            break;
+        default:
+            break;
+    }
+}
+
+//function that processes the information from the 5-day weather forecast and populates the webpage with weather data
+function Process5DayInfoForOutput(arr1, arr2, arr3, arr4, arr5){
+    const dayFormatter = new Intl.DateTimeFormat(undefined, {
+        weekday: 'long',
+    })
+    fiveDayTitle1Var = dayFormatter.format(arr1[0].dt * 1000);
+    fiveDayTitle2Var = dayFormatter.format(arr2[0].dt * 1000);
+    fiveDayTitle3Var = dayFormatter.format(arr3[0].dt * 1000);
+    fiveDayTitle4Var = dayFormatter.format(arr4[0].dt * 1000);
+    fiveDayTitle5Var = dayFormatter.format(arr5[0].dt * 1000);
+
+    fiveDayTitle1.textContent = fiveDayTitle1Var;
+    fiveDayTitle2.textContent = fiveDayTitle2Var;
+    fiveDayTitle3.textContent = fiveDayTitle3Var;
+    fiveDayTitle4.textContent = fiveDayTitle4Var;
+    fiveDayTitle5.textContent = fiveDayTitle5Var;
+
+    fiveDayImg1Var = Determine5DayIcons(arr1);
+    fiveDayImg2Var = Determine5DayIcons(arr2);
+    fiveDayImg3Var = Determine5DayIcons(arr3);
+    fiveDayImg4Var = Determine5DayIcons(arr4);
+    fiveDayImg5Var = Determine5DayIcons(arr5);
+
+    fiveDayImg1.src = EvaluateWeatherIcon(fiveDayImg1Var);
+    fiveDayImg2.src = EvaluateWeatherIcon(fiveDayImg2Var);
+    fiveDayImg3.src = EvaluateWeatherIcon(fiveDayImg3Var);
+    fiveDayImg4.src = EvaluateWeatherIcon(fiveDayImg4Var);
+    fiveDayImg5.src = EvaluateWeatherIcon(fiveDayImg5Var);
+
+    fiveDay1HighVar = FindHighTemp(arr1);
+    fiveDay2HighVar = FindHighTemp(arr2);
+    fiveDay3HighVar = FindHighTemp(arr3);
+    fiveDay4HighVar = FindHighTemp(arr4);
+    fiveDay5HighVar = FindHighTemp(arr5);
+
+    fiveDay1High.textContent = FindHighTemp(arr1);
+    fiveDay2High.textContent = FindHighTemp(arr2);
+    fiveDay3High.textContent = FindHighTemp(arr3);
+    fiveDay4High.textContent = FindHighTemp(arr4);
+    fiveDay5High.textContent = FindHighTemp(arr5);
+
+    fiveDay1LowVar = FindLowTemp(arr1);
+    fiveDay2LowVar = FindLowTemp(arr2);
+    fiveDay3LowVar = FindLowTemp(arr3);
+    fiveDay4LowVar = FindLowTemp(arr4);
+    fiveDay5LowVar = FindLowTemp(arr5);
+
+    fiveDay1Low.textContent = FindLowTemp(arr1);
+    fiveDay2Low.textContent = FindLowTemp(arr2);
+    fiveDay3Low.textContent = FindLowTemp(arr3);
+    fiveDay4Low.textContent = FindLowTemp(arr4);
+    fiveDay5Low.textContent = FindLowTemp(arr5);
+}
+
+//function to find which dataset represents the highest temp
+function FindHighTemp(arr){
+    let result = arr[0].main.temp;
+    for (let i = 0; i < arr.length; i++){
+        if (arr[i].main.temp > result) {
+            result = arr[i].main.temp;
+        }
+    }
+    return Math.round(result);
+}
+
+//function to find which dataset represents the lowest temp
+function FindLowTemp(arr){
+    let result = arr[0].main.temp;
+    for (let i = 0; i < arr.length; i++){
+        if (arr[i].main.temp < result) {
+            result = arr[i].main.temp;
+        }
+    }
+    return Math.round(result);
+}
+
+//function to determine which weather icon should represent a day in the 5-day forcast
+function Determine5DayIcons(arr){
+    let result = arr[0].weather[0].icon;
+    for (let i = 0; i < arr.length; i++){
+        switch(arr[i].weather[0].icon){
+            case "13d" || "13n":
+                result = "13d";
+                break;
+            case "11d" || "11n": 
+                if (result != "13d" || result != "13n"){
+                    result = "11d";
+                }
+                break;
+            case "10d" || "10n":
+                if (result != "13d" || result != "13n" || result != "11d" || result != "11n"){
+                    result = "10d";
+                } 
+                break;
+            case "50d" || "50n": 
+                if (result != "13d" || result != "13n" || result != "11d" || result != "11n" || result != "10d" || result != "10n"){
+                    result = "50d";
+                }
+                break;
+            case "09d" || "09n":
+                if (result != "13d" || result != "13n" || result != "11d" || result != "11n" || result != "10d" || result != "10n" || result != "50d" || result != "50n"){
+                    result = "09d";
+                }
+                break;
+            case "04d" || "04n":
+                if (result != "13d" || result != "13n" || result != "11d" || result != "11n" || result != "10d" || result != "10n" || result != "50d" || result != "50n" || result != "09d" || result != "09n"){
+                    result = "04d";
+                }
+                break;
+            case "03d" || "03n": 
+                if (result != "13d" || result != "13n" || result != "11d" || result != "11n" || result != "10d" || result != "10n" || result != "50d" || result != "50n" || result != "09d" || result != "09n" || result != "04d" || result != "04n"){
+                    result = "03d";
+                }
+                break;
+            case "02d" || "02n":
+                if (result != "13d" || result != "13n" || result != "11d" || result != "11n" || result != "10d" || result != "10n" || result != "50d" || result != "50n" || result != "09d" || result != "09n" || result != "04d" || result != "04n" || result != "03d" || result != "03n"){
+                    result = "02d";
+                }
+                break;
+            default: 
+                result = "01d"; 
+                break;
+        }
+    }
+    return result;
+}
 
 //event listeners
 submitBtn.addEventListener("click", function(){
