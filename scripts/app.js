@@ -9,6 +9,10 @@ if (prod.isLive){
 //import {} from "./localStorage.js" -- 
 import { saveFavoriteToLocalStorage, getLocalStorage, removeFromLocalStorage } from "./localStorage.js";
 
+const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+
+
 //declare variables from HTML elements
 //bg image
 let backgroundImage = document.getElementById("backgroundImage");
@@ -541,6 +545,7 @@ function Determine5DayIcons(arr){
                 result = "01d"; 
                 break;
         }
+        console.log(result);
     }
     return result;
 };
@@ -554,6 +559,10 @@ addFavBtn.addEventListener("click", function(){
     console.log();
     let location = {lon: longitude, lat: latitude, name: cityName, state: currentStateVar};
     saveFavoriteToLocalStorage(location);
+    if (injectFavorites.innerHTML != ""){
+        injectFavorites.innerHTML = "";
+        CreateElements();
+    }
 });
 
 favoritesListBtn.addEventListener("click", function(){
@@ -563,6 +572,7 @@ favoritesListBtn.addEventListener("click", function(){
     CreateElements();
 });
 
+//function for creating/displaying favorite's list
 function CreateElements(){
     let favorites = getLocalStorage();
     console.log(favorites);
@@ -572,7 +582,7 @@ function CreateElements(){
         cityBtn.className = 'btn add-fav-btn';
         cityBtn.textContent = city.name + ", " + city.state;
         cityBtn.type = 'button'
-        cityBtn.style = 'border-radius: 15px 0px 0px 15px;';
+        cityBtn.style = 'border-radius: 15px 0px 0px 15px; background-color: rgba(10, 17, 40, .8);';
         cityBtn.addEventListener('click', function(){
             latitude = city.lat;
             longitude = city.lon;
@@ -586,12 +596,34 @@ function CreateElements(){
         deleteBtn.className = 'btn btn-danger';
         deleteBtn.textContent = 'X';
         deleteBtn.type = 'button';
-        deleteBtn.style = 'height: 44px; width: 44px; border-radius: 0px 15px 15px 0px;';
+        deleteBtn.style = 'height: 44px; width: 44px; border-radius: 0px 15px 15px 0px; background-color: rgba(220, 53, 69, .8);';
         deleteBtn.addEventListener('click', function(){
             removeFromLocalStorage(city);
+            injectFavorites.innerHTML = "";
+            CreateElements();
         });
 
-        injectFavorites.appendChild(cityBtn);
-        injectFavorites.appendChild(deleteBtn);
-    })
+        let outsideDiv = document.createElement("div");
+        outsideDiv.style = 'margin-bottom: 1rem;';
+        outsideDiv.className = 'fadeIn';
+
+        outsideDiv.appendChild(cityBtn);
+        outsideDiv.appendChild(deleteBtn);
+
+        injectFavorites.appendChild(outsideDiv);
+    });
+    let closeFavorites = document.createElement('button');
+    closeFavorites.className = 'btn add-fav-btn';
+    closeFavorites.textContent = 'Close Favorites';
+    closeFavorites.type = 'button';
+    closeFavorites.style = 'width: 399px; background-color: rgba(10, 17, 40, .8);';
+    closeFavorites.addEventListener('click', function(){
+        injectFavorites.innerHTML = "";
+    });
+
+    let closeBtnDiv = document.createElement("div");
+    closeBtnDiv.className = 'fadeIn';
+
+    closeBtnDiv.appendChild(closeFavorites);
+    injectFavorites.appendChild(closeBtnDiv);
 };

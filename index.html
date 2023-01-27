@@ -39,7 +39,7 @@
                     </div>
                     
                     <!-- *~*~*~*~*~*~*~*~*~*~*~* BIG OLE EMPTY SPACE *~*~*~*~*~*~*~*~*~*~*~* -->
-                    <div id="injectFavorites" class="row" style="height: 663px;">
+                    <div id="injectFavorites" class="row organzie-favorites" style="height: 663px;">
                     
 
                     </div>
@@ -48,19 +48,19 @@
                     <div class="row">
                         <div class="col-5 d-flex flex-column align-items-center">
                             <div class="currently-title">Currently</div>
-                            <div class="d-flex"><div id="currentTemp" class="current-temp">20</div><div class="current-temp-f">F</div></div>
+                            <div class="d-flex"><div id="currentTemp" class="current-temp">--</div><div class="current-temp-f">F</div></div>
                         </div>
                         <div class="col-7">
                             <button id="addFavBtn" class="btn add-fav-btn" style="margin-bottom: 20px;">Add City to Favorites</button>
                             <br>
-                            <div class="current-location"><span id="currentLoc">Lake Tahoe</span>, <span id="currentState">NV</span></div>
+                            <div class="current-location"><span id="currentLoc">Loading...</span>, <span id="currentState"> </span></div>
                             <div class="d-flex justify-content-between" style="width: 355px;">
                                 <div class="current-time-weather d-flex align-text-top">
-                                    <img id="currentWeatherIcon" class="weather-icons" src="./assets/images/weatherIcons/snowCloudIcon.png"><span style="margin-left: 11px;" id="currentWeatherDescription">Snow</span>
+                                    <img id="currentWeatherIcon" class="weather-icons" src="./assets/images/weatherIcons/snowCloudIcon.png"><span style="margin-left: 11px;" id="currentWeatherDescription">----</span>
                                 </div>
                                 <div class="current-time-weather d-flex flex-column text-end">
-                                    <span id="currentTime">11:48am</span>
-                                    <span id="currentDate">January 17, 2023</span>
+                                    <span id="currentTime">--:--am</span>
+                                    <span id="currentDate">January 1, 2000</span>
                                 </div>
                             </div>
                         </div>
@@ -73,7 +73,7 @@
                 <div class="container-fluid">
                     <div class="row" style="margin-top: 40px; margin-right: 17px;">
                         <div class="d-flex justify-content-end">
-                            <input id="searchInput" class="search-field" type="text" placeholder="search city" style="height: 30px;">
+                            <input id="searchInput" class="search-field" type="text" placeholder="search city" style="height: 30px;" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true" data-bs-title="To refine your search, use the following format:<br><br>{city name}, {state code}, {country code}<br><br>e.g. 'Lodi, CA, US'">
                             <button id="submitBtn" class="btn" type="button"><i class="ph-magnifying-glass" style="font-size: 24px;"></i></button>
                         </div>
                     </div>
@@ -90,7 +90,7 @@
                             </div>
                             <div><img id="fiveDayImg1" src="./assets/images/weatherIcons/snowCloudIcon.png" class="weather-icons"></div>
                             <div class="five-day-high-low">
-                                H: <span id="fiveDay1High">35</span> L: <span id="fiveDay1Low">10</span>
+                                H: <span id="fiveDay1High">--</span> L: <span id="fiveDay1Low">--</span>
                             </div>
                         </div>
                         <div class="col five-day-item-spacing">
@@ -99,7 +99,7 @@
                             </div>
                             <div><img id="fiveDayImg2" src="./assets/images/weatherIcons/sunBehindCloudIcon.png" class="weather-icons"></div>
                             <div class="five-day-high-low">
-                                H: <span id="fiveDay2High">40</span> L: <span id="fiveDay2Low">15</span>
+                                H: <span id="fiveDay2High">--</span> L: <span id="fiveDay2Low">--</span>
                             </div>
                         </div>
                         <div class="col five-day-item-spacing">
@@ -108,7 +108,7 @@
                             </div>
                             <div><img id="fiveDayImg3" src="./assets/images/weatherIcons/sunBehindCloudIcon.png" class="weather-icons"></div>
                             <div class="five-day-high-low">
-                                H: <span id="fiveDay3High">40</span> L: <span id="fiveDay3Low">9</span>
+                                H: <span id="fiveDay3High">--</span> L: <span id="fiveDay3Low">--</span>
                             </div>
                         </div>
                         <div class="col five-day-item-spacing">
@@ -117,7 +117,7 @@
                             </div>
                             <div><img id="fiveDayImg4" src="./assets/images/weatherIcons/cloudIcon.png" class="weather-icons"></div>
                             <div class="five-day-high-low">
-                                H: <span id="fiveDay4High">37</span> L: <span id="fiveDay4Low">8</span>
+                                H: <span id="fiveDay4High">--</span> L: <span id="fiveDay4Low">--</span>
                             </div>
                         </div>
                         <div class="col five-day-item-spacing" style="margin-right: 17px;">
@@ -126,7 +126,7 @@
                             </div>
                             <div><img id="fiveDayImg5" src="./assets/images/weatherIcons/rainCloudIcon.png" class="weather-icons"></div>
                             <div class="five-day-high-low">
-                                H: <span id="fiveDay5High">30</span> L: <span id="fiveDay5Low">4</span>
+                                H: <span id="fiveDay5High">--</span> L: <span id="fiveDay5Low">--</span>
                             </div>
                         </div>
                     </div>
@@ -147,7 +147,7 @@
                                 <div id="todayForecastLowDescription" class="todayForecastDescription">Snow</div>
                             </div>
                             <div class="d-flex justify-content-center" style="margin-bottom: 8px;">
-                                <span id="todayForecastLowTemp" class="today-forecast-temp align-text-top">10</span><span class="today-forecast-temp-f">F</span>
+                                <span id="todayForecastLowTemp" class="today-forecast-temp align-text-top">--</span><span class="today-forecast-temp-f">F</span>
                             </div>
                         </div>
                         
@@ -160,7 +160,7 @@
                                 <span id="todayForecastHighDescription" class="todayForecastDescription">Cloudy</span>
                             </div>
                             <div class="d-flex justify-content-center" style="margin-bottom: 8px;">
-                                <span id="todayForecastHighTemp" class="today-forecast-temp align-text-top">29</span><span class="today-forecast-temp-f">F</span>
+                                <span id="todayForecastHighTemp" class="today-forecast-temp align-text-top">--</span><span class="today-forecast-temp-f">F</span>
                             </div>
                         </div>
 
