@@ -1,7 +1,15 @@
 function saveFavoriteToLocalStorage(location){
     let favorites = getLocalStorage();
+    let checker = false;
+    for (let i = 0; i < favorites.length; i++){
+        if (favorites[i].name == location.name && favorites[i].state == location.state){
+            checker = true;
+        }
+    }
 
-    favorites.push(location);
+    if (checker == false && favorites[7] == null) {
+        favorites.push(location);
+    }
 
     localStorage.setItem('Favorites', JSON.stringify(favorites));
 }
@@ -18,9 +26,11 @@ function getLocalStorage(){
 function removeFromLocalStorage(location){
     let favorites = getLocalStorage();
 
-    let locationIndex = favorites.indexOf(location);
-
-    favorites.splice(locationIndex, 1);
+    for (let i = 0; i < favorites.length; i++){
+        if (favorites[i].name == location.name && favorites[i].state == location.state){
+            favorites.splice(i, 1);
+        }
+    }
 
     localStorage.setItem('Favorites', JSON.stringify(favorites))
 }

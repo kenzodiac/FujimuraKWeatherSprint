@@ -552,7 +552,7 @@ submitBtn.addEventListener("click", function(){
 
 addFavBtn.addEventListener("click", function(){
     console.log();
-    let location = {lon: longitude, lat: latitude, name: cityName, state: currentStateVar}
+    let location = {lon: longitude, lat: latitude, name: cityName, state: currentStateVar};
     saveFavoriteToLocalStorage(location);
 });
 
@@ -572,6 +572,7 @@ function CreateElements(){
         cityBtn.className = 'btn add-fav-btn';
         cityBtn.textContent = city.name + ", " + city.state;
         cityBtn.type = 'button'
+        cityBtn.style = 'border-radius: 15px 0px 0px 15px;';
         cityBtn.addEventListener('click', function(){
             latitude = city.lat;
             longitude = city.lon;
@@ -585,7 +586,7 @@ function CreateElements(){
         deleteBtn.className = 'btn btn-danger';
         deleteBtn.textContent = 'X';
         deleteBtn.type = 'button';
-        deleteBtn.style = 'height: 44px; width: 44px; border-radius: 15px;';
+        deleteBtn.style = 'height: 44px; width: 44px; border-radius: 0px 15px 15px 0px;';
         deleteBtn.addEventListener('click', function(){
             removeFromLocalStorage(city);
         });
