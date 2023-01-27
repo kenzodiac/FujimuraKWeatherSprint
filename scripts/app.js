@@ -58,7 +58,7 @@ let todayForecastLowTemp = document.getElementById("todayForecastLowTemp");
 //forecast high
 let todayForecastHighIcon = document.getElementById("todayForecastHighIcon");
 let todayForecastHighDescription = document.getElementById("todayForecastHighDescription");
-let todayForecastHighTemp = document.getElementById("todayForecastLowTemp");
+let todayForecastHighTemp = document.getElementById("todayForecastHighTemp");
 
 //declare variables for keeping track of data fetched from Weather API
 let locationApiTempStorage;
@@ -75,6 +75,10 @@ let longitude = "";
 let cityName = "";
 let currentStateVar = "";
 let currentCountryVar = "";
+let lowIconVarTracker;
+let highIconVarTracker;
+let lowDescripVarTracker;
+let highDescripVarTracker;
 
 let currentTimeData = new Date();
 let currentTimeAmPm;
@@ -492,6 +496,22 @@ function Process5DayInfoForOutput(arr1, arr2, arr3, arr4, arr5){
     fiveDay3Low.textContent = FindLowTemp(arr3);
     fiveDay4Low.textContent = FindLowTemp(arr4);
     fiveDay5Low.textContent = FindLowTemp(arr5);
+
+    ProcessDataForTodayForcast(arr1);
+}
+
+function ProcessDataForTodayForcast(arr){
+    FindHighTemp(arr);
+    FindLowTemp(arr);
+
+    todayForecastLowIcon.src = EvaluateWeatherIcon(lowIconVarTracker);
+    todayForecastHighIcon.src = EvaluateWeatherIcon(highIconVarTracker);
+    
+    todayForecastLowDescription.textContent = lowDescripVarTracker;
+    todayForecastHighDescription.textContent = highDescripVarTracker;
+
+    todayForecastLowTemp.textContent = FindLowTemp(arr);
+    todayForecastHighTemp.textContent = FindHighTemp(arr);
 }
 
 //function to find which dataset represents the highest temp
@@ -500,6 +520,8 @@ function FindHighTemp(arr){
     for (let i = 0; i < arr.length; i++){
         if (arr[i].main.temp > result) {
             result = arr[i].main.temp;
+            highIconVarTracker = arr[i].weather[0].icon;
+            highDescripVarTracker = arr[i].weather[0].main;
         }
     }
     return Math.round(result);
@@ -511,6 +533,8 @@ function FindLowTemp(arr){
     for (let i = 0; i < arr.length; i++){
         if (arr[i].main.temp < result) {
             result = arr[i].main.temp;
+            lowIconVarTracker = arr[i].weather[0].icon;
+            lowDescripVarTracker = arr[i].weather[0].main;
         }
     }
     return Math.round(result);
